@@ -179,7 +179,7 @@ class SWANConv(MessagePassing):
             if edge_weight is not None:
                 edge_feats += edge_weight
             edge_weight = (self.edge_bn(self.edge_emb2(edge_feats)))
-            edge_weight = self.edge_emb3(torch.nn.functional.leaky_relu(edge_weight, 0.2))
+            edge_weight = torch.nn.functional.relu(self.edge_emb3(torch.nn.functional.leaky_relu(edge_weight, 0.2)))
 
         self.antisymmetric_W = self.W - self.W.T - self.gamma * torch.eye(self.in_channels, device=self.W.device)
         (self.antisym_edge_index, 
